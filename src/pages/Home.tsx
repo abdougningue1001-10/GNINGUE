@@ -36,7 +36,7 @@ const Home = () => {
               Saison 2026 / 2027
             </span>
             <img 
-              src="https://i.imgur.com/PluBEZ3.png" 
+              src="/Gemini_Generated_Image_lwz2e4lwz2e4lwz2.png" 
               alt="EAGLE FC" 
               className="h-32 w-auto mx-auto mb-8 animate-float"
               referrerPolicy="no-referrer"

@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-6 group">
               <img 
-                src="https://i.imgur.com/PluBEZ3.png" //  image en ligne direct
+                src="/Gemini_Generated_Image_lwz2e4lwz2e4lwz2.png" //  image en ligne direct
                 alt="EAGLE  FC" 
                 className="h-10 w-auto group-hover:scale -79 transition-transform"
                 referrerPolicy="no-referrer"

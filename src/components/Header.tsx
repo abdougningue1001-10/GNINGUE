@@ -35,7 +35,7 @@ const Header = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
           <img 
-            src="https://i.imgur.com/PluBEZ3.png" 
+            src="/Gemini_Generated_Image_lwz2e4lwz2e4lwz2.png" 
             alt="EAGLE FC Logo" 
             className="h-12 w-auto group-hover:scale-110 transition-transform"
             referrerPolicy="no-referrer"
