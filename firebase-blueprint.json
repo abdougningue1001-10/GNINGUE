@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information and membership status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "points": { "type": "number", "description": "Loyalty points" },
+        "membership": { "type": "string", "enum": ["Standard", "Premium"], "description": "Membership level" },
+        "avatar": { "type": "string", "description": "URL to avatar image" },
+        "memberSince": { "type": "string", "format": "date-time", "description": "When the user joined" }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A purchase made by a user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user who placed the order" },
+        "date": { "type": "string", "format": "date-time", "description": "When the order was placed" },
+        "status": { "type": "string", "enum": ["En cours", "Livré", "Annulé"], "description": "Current status of the order" },
+        "total": { "type": "number", "description": "Total price in FCFA" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "quantity": { "type": "number" },
+              "price": { "type": "number" }
+            }
+          }
+        }
+      },
+      "required": ["userId", "date", "status", "total", "items"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Order records"
+    }
+  }
+}

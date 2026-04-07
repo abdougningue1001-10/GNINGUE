@@ -6,7 +6,13 @@ import SectionTitle from '../components/SectionTitle';
 import PlayerCard from '../components/PlayerCard';
 import MatchCard from '../components/MatchCard';
 import ProductCard from '../components/ProductCard';
-import { PLAYERS, MATCHES, PRODUCTS, PARTNERS } from '../constants';
+import { PLAYERS, MATCHES, PRODUCTS, PARTNERS, NEWS, STANDINGS, GALLERY } from '../constants';
+import NewsSlider from '../components/NewsSlider';
+import StandingsTable from '../components/StandingsTable';
+import GalleryGrid from '../components/GalleryGrid';
+import SocialFeed from '../components/SocialFeed';
+import BlogCard from '../components/BlogCard';
+import { BLOG_POSTS } from '../constants';
 
 const Home = () => {
   const captain = PLAYERS.find(p => p.isCaptain);
@@ -83,6 +89,13 @@ const Home = () => {
         </div>
       </section>
 
+      {/* News Slider Section */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-4">
+          <NewsSlider articles={NEWS} />
+        </div>
+      </section>
+
       {/* Partners Section */}
       <section className="py-20 bg-black border-y border-white/5">
         <div className="container mx-auto px-4">
@@ -155,18 +168,34 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Matches Section */}
+      {/* Matches & Standings Section */}
       <section className="py-32 bg-black">
         <div className="container mx-auto px-4">
-          <SectionTitle
-            centered
-            title="Derniers Matchs"
-            subtitle="Suivez le parcours de l'EAGLE FC à travers ses performances récentes et les chocs à venir."
-          />
-          <div className="max-w-4xl mx-auto space-y-8">
-            {MATCHES.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            <div className="lg:col-span-2">
+              <SectionTitle
+                title="Derniers Matchs"
+                subtitle="Suivez le parcours de l'EAGLE FC à travers ses performances récentes et les chocs à venir."
+              />
+              <div className="space-y-8">
+                {MATCHES.map((match) => (
+                  <MatchCard key={match.id} match={match} />
+                ))}
+              </div>
+            </div>
+            <div>
+              <SectionTitle
+                title="Classement"
+                subtitle="Saison 2026/27"
+              />
+              <StandingsTable standings={STANDINGS} compact />
+              <Link
+                to="/matchs"
+                className="mt-8 inline-flex items-center gap-2 text-red-600 font-black uppercase tracking-widest text-xs hover:gap-4 transition-all"
+              >
+                Voir le classement complet <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -196,50 +225,51 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Videos Section */}
+      {/* Gallery Section */}
       <section className="py-32 bg-black border-t border-white/5">
         <div className="container mx-auto px-4">
           <SectionTitle
             centered
-            title="Highlights & Vidéos"
-            subtitle="Revivez les meilleurs moments de nos matchs et découvrez les coulisses de l'entraînement."
+            title="Galerie & Médias"
+            subtitle="Immersion totale dans la vie de l'académie EAGLE FC. Revivez nos plus beaux moments."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 relative group cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1000"
-                alt="Video Thumbnail"
-                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl shadow-red-600/40">
-                  <Play className="w-8 h-8 text-white fill-white" />
-                </div>
-              </div>
-              <div className="absolute bottom-8 left-8">
-                <h4 className="text-2xl font-black text-white uppercase tracking-tighter">Résumé : EAGLE FC vs DAKAR STARS</h4>
-                <p className="text-white/60 font-bold uppercase tracking-widest text-xs">Highlights de la semaine</p>
-              </div>
-            </div>
-            <div className="aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 relative group cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1000"
-                alt="Video Thumbnail"
-                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform border border-white/20">
-                  <Play className="w-8 h-8 text-white fill-white" />
-                </div>
-              </div>
-              <div className="absolute bottom-8 left-8">
-                <h4 className="text-2xl font-black text-white uppercase tracking-tighter">Inside : L'entraînement des Aigles</h4>
-                <p className="text-white/60 font-bold uppercase tracking-widest text-xs">Coulisses du club</p>
-              </div>
-            </div>
+          <GalleryGrid items={GALLERY} />
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="py-32 bg-black border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <SectionTitle
+              title="Derniers Articles"
+              subtitle="Analyses, interviews et coulisses. Plongez dans l'univers de l'EAGLE FC."
+              className="mb-0"
+            />
+            <Link
+              to="/blog"
+              className="text-red-600 font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:gap-4 transition-all"
+            >
+              Voir tout le blog <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {BLOG_POSTS.slice(0, 3).map((post) => (
+              <BlogCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Feed Section */}
+      <section className="py-32 bg-black border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <SectionTitle
+            centered
+            title="Suivez les Aigles"
+            subtitle="Restez connectés avec l'EAGLE FC sur tous nos réseaux sociaux pour ne rien manquer de l'actualité."
+          />
+          <SocialFeed />
         </div>
       </section>
 

@@ -1,10 +1,34 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trophy, Mail, Lock, ArrowRight, UserPlus, LogIn } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/profil');
+    }
+  }, [user, navigate]);
+
+  const handleGoogleLogin = async () => {
+    try {
+      await login();
+      navigate('/profil');
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // For now, only Google login is implemented
+    handleGoogleLogin();
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-32 pb-20">
@@ -36,7 +60,7 @@ const Login = () => {
         </div>
 
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-2xl">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
               <div className="space-y-2">
                 <label className="text-xs font-black text-red-600 uppercase tracking-widest">Nom Complet</label>

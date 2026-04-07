@@ -3,10 +3,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingCart, User, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import CartDrawer from './CartDrawer';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { totalItems } = useCart();
+  const { user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -22,6 +28,7 @@ const Header = () => {
     { name: 'Effectif', path: '/effectif' },
     { name: 'Boutique', path: '/boutique' },
     { name: 'Matchs', path: '/matchs' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -62,26 +69,49 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <button className="text-white hover:text-red-600 transition-colors">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative text-white hover:text-red-600 transition-colors p-2"
+          >
             <ShoppingCart className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full shadow-lg">
+                {totalItems}
+              </span>
+            )}
           </button>
           <Link
-            to="/login"
+            to={user ? "/profil" : "/login"}
             className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-red-700 transition-colors"
           >
             <User className="w-4 h-4" />
-            Connexion
+            {user ? "Profil" : "Connexion"}
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-white p-2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative text-white p-2"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute top-1 right-1 bg-red-600 text-white text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full">
+                {totalItems}
+              </span>
+            )}
+          </button>
+          <button
+            className="text-white p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
+
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -108,12 +138,12 @@ const Header = () => {
               ))}
               <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
                 <Link
-                  to="/login"
+                  to={user ? "/profil" : "/login"}
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center gap-2 bg-red-600 text-white py-4 rounded-xl font-bold"
                 >
                   <User className="w-5 h-5" />
-                  Connexion
+                  {user ? "Mon Profil" : "Connexion"}
                 </Link>
               </div>
             </div>

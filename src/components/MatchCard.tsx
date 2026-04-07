@@ -1,7 +1,7 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Match } from '../types';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, MapPin, ChevronDown, ChevronUp, Users } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 interface MatchCardProps {
@@ -9,6 +9,8 @@ interface MatchCardProps {
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -58,12 +60,59 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         </div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-white/5 flex justify-center">
+      {match.status === 'finished' && match.scorers && (
+        <div className="mt-6 text-center">
+          <p className="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Buteurs</p>
+          <p className="text-sm text-gray-400 font-bold uppercase tracking-tighter">
+            {match.scorers.join(' • ')}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
           <MapPin className="w-4 h-4 text-red-600" />
           Bayakh, Thies
         </div>
+        
+        {match.lineup && (
+          <button
+            onClick={() => setShowDetails(!showDetails)}
+            className="flex items-center gap-2 text-white font-black uppercase tracking-widest text-[10px] hover:text-red-600 transition-colors"
+          >
+            {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {showDetails ? 'Masquer les détails' : 'Détails du match'}
+          </button>
+        )}
       </div>
+
+      <AnimatePresence>
+        {showDetails && match.lineup && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+              <div className="flex items-center gap-3 mb-6">
+                <Users className="w-5 h-5 text-red-600" />
+                <h5 className="text-sm font-black text-white uppercase tracking-widest">Composition de l'équipe</h5>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {match.lineup.map((player, i) => (
+                  <span
+                    key={i}
+                    className="px-4 py-2 bg-black/40 border border-white/5 rounded-full text-xs font-bold text-gray-300 uppercase tracking-tighter"
+                  >
+                    {player}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

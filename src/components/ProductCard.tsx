@@ -2,15 +2,14 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Product } from '../types';
 import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const handleBuy = () => {
-    alert(`Produit ajouté au panier : ${product.name}`);
-  };
+  const { addToCart } = useCart();
 
   return (
     <motion.div
@@ -45,11 +44,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </p>
         
         <button
-          onClick={handleBuy}
+          onClick={() => addToCart(product)}
           className="w-full bg-white text-black py-4 rounded-2xl font-black uppercase tracking-tighter flex items-center justify-center gap-3 hover:bg-red-600 hover:text-white transition-all group/btn"
         >
           <ShoppingBag className="w-5 h-5" />
-          Acheter Maintenant
+          Ajouter au Panier
           <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </button>
       </div>
