@@ -29,12 +29,12 @@ export const PLAYERS: Player[] = [
   {
     id: '3',
     name: 'El H. Amadou Thioye ',
-    position: 'Défenseur Central',
+    position: 'Milieu relayeur',
     number: 21,
     image: 'https://i.imgur.com/fQjmNo8.png',
     stats: {
       goals: 2,
-      assists: 12,
+      assists: 15,
       matches: 25,
     },
   },
@@ -61,7 +61,7 @@ export const MATCHES: Match[] = [
   },
   {
     id: '2',
-    opponent: 'Dakar Stars',
+    opponent: 'equipe thier',
     date: '2026-04-01',
     time: '18:30',
     isHome: false,
@@ -91,7 +91,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '2',
     name: 'Maillot Extérieur 2026',
-    price: 1000,
+    price: 10000,
     image: 'https://i.imgur.com/9RHXFet.png', // image en ligne directe
     description: 'Le maillot officiel extérieur blanc et bleu avec les logos MLG Loyauté et EAGLE FC.',
     category: 'kit',
